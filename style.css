@@ -1,0 +1,16 @@
+.key-combos {
+    float: right;
+}
+
+.toggle-hint {
+    text-align: center;
+}
+
+.hint-that {
+    display: none;
+}
+
+#my-canvas {
+    width: 100%;
+    height: 100%;
+}
