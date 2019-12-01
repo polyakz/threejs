@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function (array, offset) {
     var legoHuman;
     var legoTree;
     var legoCar;
+    var meshLoaded;
     var isTweening = false;
 
     var meshController = function () {
@@ -59,8 +60,6 @@ document.addEventListener("DOMContentLoaded", function (array, offset) {
         scene.add(ambientLight);
         scene.add(pointLight);
         scene.add(rectLight);
-
-
 
         // Textures
         var textureLoader = new THREE.TextureLoader();
@@ -271,6 +270,30 @@ document.addEventListener("DOMContentLoaded", function (array, offset) {
         render();
     }
 
+    function loader() {
+        var loader = new THREE.OBJLoader();
+        loader.load('assets/csonak.obj', function ( loaded ) {
+                meshLoaded = loaded;
+                console.log(meshLoaded);
+                meshLoaded.scale.set( 10, 10, 10 );
+
+                meshLoaded.traverse( function ( child ) {
+                    if ( child instanceof THREE.Mesh ) {
+                        mat = new THREE.MeshLambertMaterial( {color: 0x2080f0, side: THREE.DoubleSide} );
+                        child.material = mat;
+                    }
+                } );
+
+                init();
+            },
+            function ( xhr ) {
+                console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+            },
+            function ( error ) {
+                console.log( 'An error happened' );
+            });
+    }
+
     function stepForward(start, end, time) {
         var object = legoHuman;
         if (!isTweening) {
@@ -371,6 +394,6 @@ document.addEventListener("DOMContentLoaded", function (array, offset) {
     }
 
     animate();
-    init();
+    loader();
 });
 
